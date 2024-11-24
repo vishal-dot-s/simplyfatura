@@ -5,8 +5,8 @@
 !.gitignore
 
 # Allow a specific folder
-!/static
-!/templates
+!static/
+!templates/
 !app.py
 !database.py
 !db.py
