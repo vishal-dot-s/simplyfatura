@@ -1,0 +1,14 @@
+# Ignore all files and folders
+*
+
+# Allow .gitignore file itself
+!.gitignore
+
+# Allow a specific folder
+!static/
+!templates/
+!app.py
+!database.py
+!db.py
+!image_processing.py
+
