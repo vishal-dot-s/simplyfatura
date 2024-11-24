@@ -1,0 +1,517 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Result</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2f3640;
+        }
+
+        /* Stylish Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button Styles */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-share {
+            background-color: #3498db;
+        }
+
+        .btn-share:hover {
+            background-color: #2980b9;
+        }
+
+        /* Total Price Section */
+        #totalPrice {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+
+        /* Invoice Info Styles */
+        #invoiceInfo {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Split Summary */
+        #splitSummary {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+
+    <script>
+        const friends = ['Me', 'Friend 1', 'Friend 2'];
+
+        function displayResult() {
+            // Retrieve the stored result from localStorage
+            const invoiceData = localStorage.getItem('invoiceData');
+
+            if (invoiceData) {
+                // Parse JSON data
+                const parse = JSON.parse(invoiceData);
+                const data1 = JSON.parse(parse.data);
+                const table = document.getElementById('resultTable');
+
+                // Create table headers
+                const header = `
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Share With</th>
+                        <th>Actions</th>
+                    </tr>
+                `;
+                table.innerHTML += header;
+
+                let total = 0;
+
+                // Populate table with items
+                data1.items.forEach((item, index) => {
+                    const row = `
+                        <tr id="row-${index}">
+                            <td>${item.name}</td>
+                            <td>${item.quantity}</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>
+                                <select id="shareWith-${index}">
+                                    <option value="none">-- Select Friend --</option>
+                                    <option value="friend1">Friend 1</option>
+                                    <option value="friend2">Friend 2</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-delete" onclick="deleteItem(${index})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    table.innerHTML += row;
+                    total += item.price * item.quantity;
+                });
+
+                // Display total price
+                document.getElementById('totalPrice').innerText = 'Total Price: $' + total.toFixed(2);
+
+                // Display invoice number and date if available
+                if (parse.invoiceNumber) {
+                    document.getElementById('invoiceNumber').innerText = 'Invoice Number: ' + parse.invoiceNumber;
+                }
+                if (parse.date) {
+                    document.getElementById('invoiceDate').innerText = 'Invoice Date: ' + parse.date;
+                }
+
+                // Add split calculation button
+                const calcButton = document.createElement('button');
+                calcButton.innerText = 'Calculate Split';
+                calcButton.classList.add('btn');
+                calcButton.onclick = calculateSplit;
+                document.body.appendChild(calcButton);
+            } else {
+                // Handle case when no data is available
+                document.getElementById('result').innerText = 'No data found. Please upload an invoice first.';
+            }
+        }
+
+        // Delete item function
+        function deleteItem(index) {
+            const row = document.getElementById(`row-${index}`);
+            row.remove();
+            // Optionally, you can also update localStorage after deletion
+        }
+
+        // Calculate the split between friends
+        function calculateSplit() {
+            const invoiceData = localStorage.getItem('invoiceData');
+            const parse = JSON.parse(invoiceData);
+            const data1 = JSON.parse(parse.data);
+
+            let totalForMe = 0;
+            let totalForFriend1 = 0;
+            let totalForFriend2 = 0;
+
+            // Iterate over each item and calculate the split
+            data1.items.forEach((item, index) => {
+                const selectedFriend = document.getElementById(`shareWith-${index}`).value;
+                const itemTotal = item.price * item.quantity;
+
+                if (selectedFriend === 'friend1') {
+                    // Split between you and Friend 1
+                    totalForMe += itemTotal / 2;
+                    totalForFriend1 += itemTotal / 2;
+                } else if (selectedFriend === 'friend2') {
+                    // Split between you and Friend 2
+                    totalForMe += itemTotal / 2;
+                    totalForFriend2 += itemTotal / 2;
+                } else {
+                    // Split equally among 3 people
+                    totalForMe += itemTotal / 3;
+                    totalForFriend1 += itemTotal / 3;
+                    totalForFriend2 += itemTotal / 3;
+                }
+            });
+
+            // Display the split summary
+            document.getElementById('splitSummary').innerHTML = `
+                <p>Amount for Me: $${totalForMe.toFixed(2)}</p>
+                <p>Amount for Friend 1: $${totalForFriend1.toFixed(2)}</p>
+                <p>Amount for Friend 2: $${totalForFriend2.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</head>
+<body onload="displayResult()">
+    <h1>Invoice Details</h1>
+
+    <div id="invoiceInfo">
+        <p id="invoiceNumber"></p>
+        <p id="invoiceDate"></p>
+    </div>
+
+    <h2>Extracted Items</h2>
+    <table id="resultTable"></table>
+
+    <div id="totalPrice"></div>
+
+    <div id="splitSummary"></div>
+
+    <p id="result"></p>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Result</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2f3640;
+        }
+
+        /* Stylish Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button Styles */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        /* Total Price Section */
+        #totalPrice {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+
+        /* Invoice Info Styles */
+        #invoiceInfo {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Split Summary */
+        #splitSummary {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .dropdown-content label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+    </style>
+
+    <script>
+        // Define dynamic list of friends (can be any number of friends)
+        const friends = ['Me', 'Friend 1', 'Friend 2', 'Friend 3', 'Friend 4', 'Friend 5', 'Friend 6']; // Add more friends as needed
+
+        function displayResult() {
+            // Retrieve the stored result from localStorage
+            const invoiceData = localStorage.getItem('invoiceData');
+            console.log(invoiceData)
+            if (invoiceData) {
+                // Parse JSON data
+                const parse = JSON.parse(invoiceData);
+                const data1 = JSON.parse(parse.data);
+                const table = document.getElementById('resultTable');
+
+                // Create table headers
+                const header = `
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Share With</th>
+                        <th>Actions</th>
+                    </tr>
+                `;
+                table.innerHTML += header;
+
+                let total = 0;
+
+                // Populate table with items
+                data1.items.forEach((item, index) => {
+                    const row = `
+                        <tr id="row-${index}">
+                            <td>${item.name}</td>
+                            <td>${item.quantity}</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>
+                                ${generateFriendDropdown(index)}
+                            </td>
+                            <td>
+                                <button class="btn btn-delete" onclick="deleteItem(${index})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    table.innerHTML += row;
+                    total += item.price;  // Calculate total based on price alone
+                });
+
+                // Display total price
+                document.getElementById('totalPrice').innerText = 'Total Price: €' + total.toFixed(2);
+
+                // Display invoice number and date if available
+                if (parse.invoiceNumber) {
+                    document.getElementById('invoiceNumber').innerText = 'Invoice Number: ' + parse.invoiceNumber;
+                }
+                if (parse.date) {
+                    document.getElementById('invoiceDate').innerText = 'Invoice Date: ' + parse.date;
+                }
+
+                // Add a button to send data
+                const sendButton = document.createElement('button');
+                sendButton.innerText = 'Send Data';
+                sendButton.classList.add('btn');
+                sendButton.onclick = sendDataToBackend;
+                document.body.appendChild(sendButton);
+            } else {
+                // Handle case when no data is available
+                document.getElementById('result').innerText = 'No data found. Please upload an invoice first.';
+            }
+        }
+
+        // Generate dynamic dropdown with checkboxes for friends
+        function generateFriendDropdown(index) {
+            return `
+                <div class="dropdown">
+                    <button>Select Friends</button>
+                    <div class="dropdown-content" id="dropdown-${index}">
+                        ${friends.map(friend => `
+                            <label>
+                                <input type="checkbox" value="${friend}"> ${friend}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get selected friends from each dropdown
+        function getSelectedFriends(index) {
+            const checkboxes = document.querySelectorAll(`#dropdown-${index} input[type="checkbox"]`);
+            const selectedFriends = [];
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedFriends.push(checkbox.value);
+                }
+            });
+            return selectedFriends;
+        }
+
+        // Display selected data in console
+        function sendDataToBackend() {
+            const invoiceData = localStorage.getItem('invoiceData');
+            const parse = JSON.parse(invoiceData);
+            const data1 = JSON.parse(parse.data);
+
+            // Prepare data to send
+            const dataToSend = data1.items.map((item, index) => {
+                const sharingWith = getSelectedFriends(index);
+
+                return {
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    sharingWith: sharingWith  // List of selected friends
+                };
+            });
+
+            // Display data in console for local testing
+            console.log("Invoice Data:", {
+                invoiceNumber: parse.invoiceNumber,
+                date: parse.date,
+                items: dataToSend
+            });
+        }
+
+        // Delete item function
+        function deleteItem(index) {
+            const row = document.getElementById(`row-${index}`);
+            row.remove();
+            // Optionally, you can also update localStorage after deletion
+        }
+
+    </script>
+</head>
+<body onload="displayResult()">
+    <h1>Invoice Details</h1>
+
+    <div id="invoiceInfo">
+        <p id="invoiceNumber"></p>
+        <p id="invoiceDate"></p>
+    </div>
+
+    <h2>Extracted Items</h2>
+    <table id="resultTable"></table>
+
+    <div id="totalPrice"></div>
+
+    <div id="splitSummary"></div>
+
+    <p id="result"></p>
+</body>
+</html>
+
+

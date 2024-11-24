@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Group</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ManageGroup.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .column-iteam, .column-Quantity, .column-price,.column-share-own {
+    flex: 1;
+    padding: 5px;
+    text-align: left;
+}
+ </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>Invoice Management</h2>
+      </div>
+      <nav class="menu">
+        <a href="{{ url_for('dashboard') }}"><i class="fas fa-home icons_setting"></i></i>Home</a>
+        <a href="#"><i class="fas fa-file-invoice icons_setting"></i>My Invoices</a>
+        <a href="{{ url_for('ManageGroup') }}"><i class="fas fa-users icons_setting"></i>Manage Group</a>
+        <a href="{{url_for('GrocceryList')}}" class="active"><i class="fas fa-shopping-basket icons_setting"></i>Groccery List</a>
+        <a href="#"><i class="fas fa-user-cog icons_setting"></i> Settings</a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt icons_setting"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header>
+        <h1>welcome,&nbsp;{{ user['name'] }}</h1>
+  
+        <div class="action_buttons">
+            <button class="new-invoice-btn" onclick="openModal()">Add Grocery +</button>
+        </div>
+      </header>
+
+    <section class="invoices-section">
+        <div class="group_billing_show">
+            <div class="groups-list">
+                <h2 id="GROUPS"> Month GrocceryList</h2>
+                <div class="members-table">
+                    <div class="table-header">
+                        <div class="column-iteam">Iteam Name</div>
+                        <div class="column-Quantity">Quantity</div>
+                        <div class="column-price">Price</div>
+                        <div class="column-share-own">Share own</div>
+                    </div>
+                    <div id="groupsContainer" class="table-body"></div>
+                </div>
+            </div>
+            
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="groupModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Create New Group</h2>
+        <input type="text" id="groupNameInput" placeholder="Enter group name">
+        <button onclick="createGroup()">Create Group</button>
+    </div>
+</div>
+
+  <script src="{{ url_for('static', filename='js/ManageGroup.js') }}"></script>
+</body>
+</html>

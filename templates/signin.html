@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  </head>
+  <title>Login</title>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form action="/signup" method="POST" id="signUpForm">
+         <h1>Create Account</h1>
+         <i class="fas fa-user" style="font-size: 32px;padding-bottom: 10px; color:  #24C6DC;"></i>
+        <input type="text" placeholder="Name" name="name" id="name" required />
+        <input type="email" placeholder="Email" id="email" name="email" required />
+        <div class="password-container">
+          <input type="password" placeholder="Enter password" name="passsword" id="password" required />
+          <span class="far fa-eye-slash" id="eye"></span>
+          <span id="message" style="display: none;"></span>
+        </div>  
+        <div class="password-container">
+        <input type="password" placeholder="Confirm Password" name="Confirm_passsword" id="Confirm_password" required />
+        </div>
+        <span style="font-size: 24px; color: rgb(84, 134, 9);" id="confirm-password-error"></span>
+        <button type="button" id="signUpButton">Make</button> <!-- Add ID here -->
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form action="/signin" method="post">
+        <h1>Authentication &nbsp;&nbsp;<i class="fas fa-fingerprint"></i></h1>
+          <input type="email" id="signin_email" name="email" placeholder="Email" />
+          <i class="fas fas_user fa-user"></i>
+        <input type="password"  id="signin_password" name="Password"  placeholder="password"/>
+        <i class="fas fas_key fa-key"></i>
+        <a href="#">Forgot your password?</a>
+        <button type="button" id="signInButton">Authentication</button> <!-- Add ID here -->
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To stay connected with us please login with your personal info</p>
+          <button class="ghost" id="SignIn">Authentication</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start your journey with us </p>
+          <button class="ghost" id="SignUp">Create Account</button>
+        </div>
+      </div> 
+    </div>
+  </div>
+  {% include 'modal.html' %}
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
+

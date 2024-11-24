@@ -1,0 +1,270 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.upload-box {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+h3 {
+    margin-bottom: 20px;
+    color: #ccc;
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+
+.upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.upload-icon {
+    width: 60px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.upload-area p {
+    margin-bottom: 8px;
+    color: #7c7c7c;
+}
+
+.browse-text {
+    color: #4f5dff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+small {
+    color: #bbb;
+    display: block;
+}
+
+.file-progress {
+    display: none;
+    margin-top: 20px;
+    text-align: left;
+    position: relative;
+}
+
+.file-icon {
+    width: 30px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#fileName {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    margin-top: 8px;
+    position: relative;
+    display: inline-block;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 4px;
+    width: 0;
+    transition: width 0.4s;
+}
+
+.progress-status {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+    color: green;
+    display: none;
+    padding: 5px;
+}
+
+
+
+
+/* pop up model css start  */
+
+#modal {
+            display: none;
+            position: fixed;
+            z-index: 20;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #modal-content {
+            background-color: #fff;
+            margin: 8% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 60%;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            animation: scaleUp 0.3s ease-in-out forwards;
+        }
+
+        @keyframes scaleUp {
+            to { transform: scale(1); }
+        }
+
+        #image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        #image {
+            width: auto;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #zoom-controls, #pan-controls, #rotate-controls {
+            margin-top: 20px;
+        }
+
+        #rotate-slider {
+            width: 100%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .close {
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f00;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #cropButton {
+            background-color: #28a745;
+        }
+
+        #cropButton:hover {
+            background-color: #218838;
+        }
+
+        #preview {
+            display: none;
+        }
+
+        #croppedImage {
+            max-width: 100%;
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            #modal-content {
+                width: 90%;  /* Make the modal take up more width on smaller screens */
+                margin: 5% auto;  /* Adjust margins for better spacing */
+                padding: 20px;  /* Reduce padding for smaller screens */
+            }
+        
+            .modal-header h2 {
+                font-size: 1.25em;  /* Decrease font size for mobile */
+            }
+        
+            .close {
+                font-size: 20px;  /* Smaller close button */
+            }
+        
+            #image-container {
+                height: 300px;  /* Reduce height for better fit */
+            }
+        
+            #image {
+                height: auto;  /* Maintain aspect ratio on smaller screens */
+            }
+        
+            button {
+                padding: 8px 16px;  /* Smaller button padding */
+                font-size: 14px;  /* Smaller font size */
+            }
+        
+            #rotate-slider {
+                margin-top: 10px;  /* Adjust slider position */
+            }
+            
+            #croppedImage {
+                max-width: 100%;  /* Ensure cropped image doesn't overflow */
+                height: auto;  /* Maintain aspect ratio */
+            }
+        }
+        

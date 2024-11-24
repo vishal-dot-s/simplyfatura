@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Group</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ManageGroup.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <style>
+ </style>
+</head>
+<body>
+  <header>
+    <button id="hamburger-btn" aria-label="Toggle Sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- <h1>Invoice Management</h1> -->
+      <div>
+        <input type="hidden" id="user_id" name="user_id" value="{{user['id']}}">
+            <div class="action_buttons">
+                {% if group_id %}
+                <div id="group_information">
+                 <h4>Group ID</h4>
+                 <span id="user_group_id">{{group_id}}</span>
+                </div>
+                 {% else %}
+                 <button class="new-invoice-btn"  id="create-group-btn" onclick="openModal()">Create Group +</button>  
+                 <button id="openJoinRequestsPopup">View Join Requests</button> 
+                  {% endif %}
+                  {% if user['role'] == 'admin' %}
+                  <button class="new-invoice-btn" onclick="openfinduserModal()">Find Users +</button>
+                   {% endif %}
+            </div>
+      </div>
+ 
+  </header>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h2 style="color: whitesmoke;">Invoice Management</h2>
+      </div>
+      <nav class="menu">
+        <a href="{{ url_for('dashboard') }}"><i class="fas fa-home icons_setting"></i></i>Home</a>
+        <a href="#"><i class="fas fa-file-invoice icons_setting"></i>My Invoices</a>
+        <a href="{{ url_for('ManageGroup') }}" class="active"><i class="fas fa-users icons_setting"></i>Manage Group</a>
+        <a href="#"><i class="fas fa-shopping-basket icons_setting"></i>Grocery List</a>
+        <a href="#"><i class="fas fa-user-cog icons_setting"></i> Settings</a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt icons_setting"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="group_billing_show">
+      <h2 id="GROUPS">Group Members</h2>
+    <section class="Groupinvoices-section">
+                <div class="members-table">
+                    <div class="table-header">
+                        <div class="column-name">Name</div>
+                        <div class="column-email">Email</div>
+                        <div class="column-actions">Actions</div>
+                        <div class="column-email" style="text-transform: uppercase;">Status</div>
+                        <div class="column-join">Join</div>
+                    </div>
+                  <div id="groupsContainer" class="table-body"></div>
+                </div>
+      </section>
+      </div>
+    </main>
+  </div>
+
+
+  <div id="membersModal" class="modal">
+    <div class="resultuser_modal-content">
+        <span class="close-button" onclick="findusercloseModal()">&times;</span>
+        <h2 id="GROUPS">Find users</h2>
+        <div class="members-table">
+            <div class="table-header">
+                <div class="column-name">Name</div>
+                <div class="column-email">Email</div>
+                <div class="column-actions">Actions</div>
+                <div class="column-join">Join</div>
+            </div>
+            <div id="finduserResult" class="table-body"></div>
+        </div>
+    </div>
+</div>
+
+
+
+  <div id="groupModal" class="create_search_modal" style="display: none;">
+    <div class="create_search_modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Create New Group</h2>
+        <span id="groupid"></span>
+        <form id="createGroupForm">
+          <label for="name">Group Name:</label>
+          <input type="text" id="name" name="name" required placeholder="Enter Group Name">
+          <button type="submit">Create Group</button>
+      </form>
+      
+    </div>
+</div>
+
+<div id="finduserModal" class="create_search_modal" style="display: none;">
+  <div class="create_search_modal-content">
+      <span class="close-btn" onclick="usercloseModal()">&times;</span>
+      <h2>Add New User </h2>
+      <input type="text" id="search-input" placeholder="Enter Name or Email">
+      <button id="search_user">Find user</button>
+  </div>
+</div>
+
+
+
+<div class="showjoinrequest" id="joinRequestModal">
+  <div class="showjoin_request_modal-content">
+      <span class="close-btn" id="closeModalBtn">&times;</span>
+      <h2>Group Join Requests</h2>
+      <hr style="width: 32%; border: 2px solid #00b5ec; border-radius: 10px; margin: 5px 0px;">
+      <table>
+          <thead class="showjoinrequest_thead">
+              <tr>
+                  <th>Requested By</th>
+                  <th>Group Name</th>
+                  <th>Date Requested</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody id="joinRequestsTableBody">
+            <!-- Rows will be inserted here dynamically -->
+        </tbody>
+      </table>
+  </div>
+</div>
+
+
+{% include 'modal.html' %}
+  <script src="{{ url_for('static', filename='js/ManageGroup.js') }}"></script>
+</body>
+</html>

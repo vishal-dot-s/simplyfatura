@@ -1,0 +1,762 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    background-color: #f7fafd;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .logo h2 {
+    text-align: center;
+    font-size: 20px;
+    position: relative;
+    /* top: -10px; */
+
+  }
+  .icons_setting{
+     font-size: 24px;
+     color: rgb(251, 245, 245);
+     margin: 5px;
+  }
+  .menu {
+    margin-top: 50px;
+  }
+  
+  .menu a {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .menu a img {
+    margin-right: 15px;
+  }
+  
+  .menu a.active {
+    background-color: #00a0d1;
+    border-radius: 8px;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header h1 {
+    color: #00a0d1;
+    font-size: 24px;
+  }
+  
+  .new-invoice-btn {
+    background-color: #00b5ec;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .invoices-section {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .invoice-list {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  .group_billing_show{
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 95%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 0px;
+    box-shadow: 0 0 15px rgba(7, 189, 168, 0.1);
+    text-align: center;
+  }
+  .invoice-list select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .invoice-list ul {
+    list-style: none;
+  }
+  
+  .invoice-list li {
+    margin-bottom: 15px;
+  }
+  
+  .invoice-list a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  
+  .invoice-list a small {
+    color: #00b5ec;
+  }
+  
+  .invoice-details {
+    width: 65%;
+    margin-left: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .status {
+    background-color: #00b5ec;
+    padding: 5px;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f1f1f1;
+  }
+  
+  .export-btn {
+    background-color: #00b5ec;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+
+
+  .new_group_member_modal {
+    position: fixed;
+    inset: 0; /* Centers modal on screen */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    transition: opacity 140ms ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.new_group_member_modal.open {
+    opacity: 1; /* Show when open */
+    pointer-events: auto; /* Enable interactions */
+}
+
+.new_group_member_modal-content {
+    width: 90%;
+    max-width: 800px;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    background-color: #0e0d0d;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.new_group_member_modal-content hr{
+    width: 47%;
+}
+.new_group_member_modal-content.open {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.new_group_member_modal-content h2{
+    color: whitesmoke;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.new_group_member_modal-content button{
+    padding: 10px;
+    background-color: #00b5ec;
+    border: none;
+    opacity: 0;
+    color: white;
+    transform: translateX(100px);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #b11010;
+}
+
+.new_group_member_modal-content.open button{
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.new_group_member_modal-content.open h2 {
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+#members-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#members-table th, #members-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+#members-table th {
+    font-weight: bold;
+    background-color: #100f0f;
+    color: whitesmoke;
+}
+
+#members-table tbody tr {
+    background-color: #0e0d0d;
+    color: whitesmoke;
+}
+#members-table tbody tr td {
+    color: whitesmoke;
+}
+
+#members-table tbody {
+    opacity: 0;
+    transform: translateX(100px); /* Start off-screen to the left */
+    transition: opacity 600ms ease-out, transform 600ms ease-out;; /* Slow transition for smoother effect */
+}
+
+
+
+/* When the modal is opened, add an 'open' class to apply the transition */
+.new_group_member_modal.open #members-table tbody{
+    opacity: 1 !important;
+    transform: translateX(0) !important; /* Slide in to normal position */
+}
+
+
+
+
+
+
+.uploadmodal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.uploadmodal.active {
+  display: flex;
+}
+.upload-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  position: relative;
+}
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+
+
+.cropmodal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Default z-index for regular modals */
+}
+
+/* Ensure the crop modal appears on top */
+.top-modal {
+  z-index: 2000; /* Higher z-index to appear above other modals */
+}
+
+/* Modal content styling */
+#modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  position: relative;
+}
+
+
+
+
+.invoice_item_modal {
+  position: fixed;
+  inset: 0; /* Centers modal on screen */
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  transition: opacity 140ms ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.invoice_item_modal.open {
+  opacity: 1; /* Show when open */
+  pointer-events: auto; /* Enable interactions */
+}
+
+.invoice_item_modal-content {
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  background-color: #0e0d0d;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.invoice_item_modal-content hr {
+  width: 47%;
+}
+
+.invoice_item_modal-content.open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.invoice_item_modal-content h2 {
+  color: whitesmoke;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.invoice_item_modal-content button {
+  padding: 10px;
+  background-color: #00b5ec;
+  border: none;
+  opacity: 0;
+  color: white;
+  transform: translateX(100px);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.invoice_item_modal-content.open button {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.invoice_item_modal-content.open h2 {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+#invoice_item-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#invoice_item-table th, #invoice_item-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+#invoice_item-table th {
+  font-weight: bold;
+  background-color: #100f0f;
+  color: whitesmoke;
+}
+
+#invoice_item-table tbody tr {
+  background-color: #0e0d0d;
+  color: whitesmoke;
+}
+
+#invoice_item-table tbody tr td {
+  color: whitesmoke;
+}
+
+#invoice_item-table tbody {
+  opacity: 0;
+  transform: translateX(100px); /* Start off-screen to the left */
+  transition: opacity 600ms ease-out, transform 600ms ease-out; /* Slow transition for smoother effect */
+}
+
+.invoice_item_modal.open #invoice_item-table tbody {
+  opacity: 1 !important;
+  transform: translateX(0) !important; /* Slide in to normal position */
+}
+
+.modal-overlay {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed position to cover the screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 999; /* Ensure it overlays on top of other content */
+  border-radius: 4px;
+  border: 2px solid whitesmoke;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  width: 400px;
+  margin: 100px auto; /* Center it vertically and horizontally */
+  border-radius: 8px;
+  color: rgb(8, 6, 6);
+}
+
+/* Style for buttons inside the modal */
+.modal-content button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* Add some padding and spacing for form elements */
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-110%); /* Hidden by default */
+  z-index: 1000;
+  background-color: #00b5ec;
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Show when open */
+}
+
+
+
+.menu a {
+  display: block;
+  padding: 15px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background-color: #444;
+}
+
+#hamburger-btn {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0e0d0d;
+  z-index: 1100;
+}
+
+#hamburger-btn span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #333;
+  color: white;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#hamburger-btn span:nth-child(1) {
+  top: 0;
+}
+
+#hamburger-btn span:nth-child(2) {
+  top: 10px;
+}
+
+#hamburger-btn span:nth-child(3) {
+  top: 20px;
+}
+
+/* Change icon to X when active */
+#hamburger-btn.active span:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+#hamburger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+#hamburger-btn.active span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f4f4f4;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  margin-left: 0px;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.content.sidebar-open {
+  margin-left: 240px;
+}
+
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .logo h2 {
+    position: relative;
+    font-size: 16px;
+    top: 21px;
+  }
+
+  .menu a {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .new-invoice-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .invoices-section {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .invoice-list {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+
+  .invoice-details {
+    width: 100%;
+    margin: 0;
+    padding: 15px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  .export-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* Adjust modal styles for smaller screens */
+  .new_group_member_modal-content, 
+  .invoice_item_modal-content, 
+  .upload-container, 
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+
+  #members-table th, 
+  #members-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  #addItemForm label, 
+  #addItemForm input, 
+  #addItemForm button {
+    font-size: 14px;
+  }
+
+  #invoice-header p {
+    font-size: 14px;
+  }
+
+  #invoice-total {
+    font-size: 14px;
+  }
+
+  .modal-content button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .sidebar {
+    position: absolute;
+    height: 100%;
+    transform: translateX(-100%);
+  }
+
+  #hamburger-btn {
+    display: block; /* Show hamburger button */
+  }
+
+  .content.sidebar-open {
+    margin-left: 0;
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 480px) {
+  .menu a {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+  }
+
+  .invoice-list ul {
+    padding: 0;
+  }
+
+  .invoice-list a {
+    font-size: 12px;
+  }
+
+  table th, 
+  table td {
+    font-size: 10px;
+  }
+  
+  .logo h2{
+    position: relative;
+    font-size: 16px;
+    top: 21px;
+  }
+  .export-btn {
+    font-size: 12px;
+  }
+
+  header h1 {
+    font-size: 18px;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

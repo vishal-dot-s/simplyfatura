@@ -1,0 +1,153 @@
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content" id="modalContent">
+        <span class="close-btn">&times;</span>
+        <div id="modalIcon" class="icon-error">⚠️</div>
+        <h2 id="modalHeading">Ooops!</h2>
+        <p id="modalMessage" style="font-size: 18px;">Something went wrong.</p>
+        <button id="actionButton">Try Again</button>
+    </div>
+</div>
+
+<!-- Modal Styles and Script -->
+<style>
+    /* Modal container */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1102;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(13, 3, 3, 0.253);
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Modal content */
+    .modal-content {
+        background-color: #00b5ec;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        width: 400px;
+        color: rgba(255, 255, 255, 0.377);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+
+    /* Close button */
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        color: rgb(184, 0, 0);
+    }
+
+    /* Close button hover color */
+    .close-btn:hover {
+        color: rgb(11, 10, 10);
+    }
+
+    /* Icon for error */
+    .icon-error {
+        font-size: 40px;
+        color: #f44336;
+        margin-bottom: 10px;
+    }
+
+    /* Icon for success */
+    .icon-success {
+        font-size: 40px;
+        color: #4CAF50;
+        margin-bottom: 10px;
+    }
+
+    /* Button */
+    .modal-content button {
+        padding: 10px 20px;
+        background-color: whitesmoke;
+        color:#24C6DC;
+        border: 1px solid #24C6DC;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    /* Button hover color */
+    .modal-content button:hover {
+        background-color: #f44336;
+        color: white;
+    }
+
+    /* Success button style */
+    .modal-content.success button {
+        border-color: #4CAF50;
+        color: #4CAF50;
+    }
+
+    .modal-content.success button:hover {
+        background-color: #4CAF50;
+    }
+</style>
+
+<script>
+    // Function to show modal with dynamic message and status (true for success, false for error)
+    function showModal(message, isSuccess) {
+        var modal = document.getElementById("myModal");
+        var modalContent = document.getElementById("modalContent");
+        var modalMessage = document.getElementById("modalMessage");
+        var modalIcon = document.getElementById("modalIcon");
+        var modalHeading = document.getElementById("modalHeading");
+        var actionButton = document.getElementById("actionButton");
+
+        // Set the message
+        modalMessage.innerText = message;
+
+        if (isSuccess) {
+            // Success styles and messages
+            modalContent.classList.add('success');
+            modalContent.classList.remove('error');
+            modalIcon.classList.remove('icon-error');
+            modalIcon.classList.add('icon-success');
+            modalIcon.innerHTML = '✔️';  // Success icon
+            modalHeading.innerText = 'Success!';
+            actionButton.innerText = 'Great!';
+        } else {
+            // Error styles and messages
+            modalContent.classList.add('error');
+            modalContent.classList.remove('success');
+            modalIcon.classList.remove('icon-success');
+            modalIcon.classList.add('icon-error');
+            modalIcon.innerHTML = '⚠️';  // Error icon
+            modalHeading.innerText = 'Ooops!';
+            actionButton.innerText = 'Try Again';
+        }
+
+        actionButton.addEventListener('click' ,AcitioncloseModal);
+        // Show the modal
+        modal.style.display = "flex";
+    }
+
+    
+    // Function to close the modal
+    function AcitioncloseModal() {
+        var modal = document.getElementById("myModal");
+         modal.style.display = "none";
+    }
+   
+    
+    // Close modal when 'X' is clicked
+    document.querySelector(".close-btn").addEventListener('click', AcitioncloseModal);
+
+    // Close modal when clicking outside the modal
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Management Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/invoiceupload.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+  <header>
+    <button id="hamburger-btn" aria-label="Toggle Sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- <h1>Invoice Management</h1> -->
+    <h2>Welcome,&nbsp;{{ user['name'] }}</h2>
+    <button class="new-invoice-btn" id="uploadInvoiceBtn">New +</button>
+  </header>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>Invoice Management</h2>
+      </div>
+      <nav class="menu">
+        <a href="{{url_for('dashboard')}}"  class="active"><i class="fas fa-home icons_setting"></i></i>Home</a>
+        <a href="#"><i class="fas fa-file-invoice icons_setting"></i>My Invoices</a>
+        <a href="{{url_for('ManageGroup')}}"><i class="fas fa-users icons_setting"></i>Manage Group</a>
+        <a href="#"><i class="fas fa-shopping-basket icons_setting"></i>Grocery List</a>
+        <a href="#"><i class="fas fa-user-cog icons_setting"></i> Settings</a>
+        <a href="{{url_for('logout') }}"><i class="fas fa-sign-out-alt icons_setting"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header>
+       
+      </header>
+
+    <section class="invoices-section">
+        <div class="invoice-list">
+            <h2>Recent Invoice</h1>
+          <ul>
+            <li>
+              <a href="#" data-invoice="01543">
+                <span class="client-name">Vishal Singh</span>
+                <span class="invoice-details">$2,200.00</span>
+                <small>SENT</small>
+              </a>
+            </li>
+            <li>
+                <a href="#" data-invoice="01543">
+                  <span class="client-name">Jassbir Singh</span>
+                  <span class="invoice-details">$2,200.00</span>
+                  <small>SENT</small>
+                </a>
+              </li>
+              <li>
+                <a href="#" data-invoice="01543">
+                  <span class="client-name">Paramjeet Singh</span>
+                  <span class="invoice-details">$2,200.00</span>
+                  <small>SENT</small>
+                </a>
+              </li>
+              <li>
+                <a href="#" data-invoice="01543">
+                  <span class="client-name">Paramjeet Singh</span>
+                  <span class="invoice-details">$2,200.00</span>
+                  <small>SENT</small>
+                </a>
+              </li>
+              <li>
+                <a href="#" data-invoice="01543">
+                  <span class="client-name">Vishal Singh</span>
+                  <span class="invoice-details">$2,200.00</span>
+                  <small>SENT</small>
+                </a>
+              </li>
+          </ul>
+        </div>
+        <div class="invoice-details">
+          <div class="status">
+            <span>Status: Sent</span>
+          </div>
+          <div id="invoice-info">
+            <h2>Invoice: 01543</h2>
+            <p>Invoice Number: 01543</p>
+            <p>Issue Date: 12/05/2023</p>
+            <p>Client: Vishal Singh</p>
+            <p>Amount: $2,200.00</p>
+            <table>
+              <thead>
+                <tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Network Cable</td>
+                  <td>4</td>
+                  <td>$30</td>
+                  <td>$1,200.00</td>
+                </tr>
+                <tr>
+                  <td>Network Router</td>
+                  <td>5</td>
+                  <td>$20</td>
+                  <td>$1,000.00</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Balance Due: $2,200.00</p>
+          </div>
+          <button class="export-btn">Export</button>
+        </div>
+        <div class="group_billing_show">
+                <h1>Members spents </h1>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+
+
+<div id="modal-one" class="new_group_member_modal">
+  <div id="content-one" class="new_group_member_modal-content">
+    <span class="close-btn" onclick=" toggleModalOne()">&times;</span>
+      <span aria-hidden="true" class="line"></span>
+      <span class="sr-only">Close Modal</span>
+    </button>
+    <h2>New Member Add Notification</h2>
+    <hr>
+    
+    <table id="members-table">
+      <thead>
+        <tr>
+          <th>Mark Read</th>
+          <th>Message</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Join Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will be inserted here -->
+      </tbody>
+    </table><br>
+    <button onclick="markSelectedNotificationsAsRead()">Mark as read</button>
+  </div>
+</div>
+  
+
+<div id="invoice-one" class="invoice_item_modal">
+  <div id="invoice-content-one" class="invoice_item_modal-content">
+    <span class="close-btn" onclick="toggleInvoiceModal()">&times;</span>
+    <h2>Items Scanned</h2>
+    <hr style="width: 20%;">
+    
+    <!-- Display Invoice Number and Date -->
+    <div id="invoice-header">
+      <p><strong style="color: aliceblue;">Invoice Number:</strong> <span id="invoice-number" style="color: aliceblue;"></span></p>
+      <p><strong style="color: aliceblue;">Date:</strong> <span id="invoice-date" style="color: aliceblue;"></span></p>
+      <p><strong style="color: aliceblue;">Time:</strong> <span id="invoice-time" style="color: aliceblue;"></span></p>
+    </div>
+
+    <table id="invoice_item-table">
+      <thead>
+        <tr>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Tax</th>
+          <th>Mark as Personal</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table><br>
+
+    <!-- Display Total -->
+    <div id="invoice-total">
+      <strong style=" color: aliceblue;">Total:</strong> €<span id="invoice-total-amount" style="color: aliceblue;"></span>
+    </div>
+
+    <button onclick="openAddItemModal()">Add new Item +</button>
+    <button id="submitTableData" onclick="submitInvoice()">Submit Invoice</button>
+  </div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="uploadModal" class="uploadmodal">
+  <div class="upload-container">
+    <span class="close-modal" id="closeModal">&times;</span>
+    <div class="upload-box">
+      <h3>File Upload</h3>
+      <div class="upload-area" id="uploadArea">
+        <img src="https://cdn-icons-png.flaticon.com/512/2175/2175188.png" alt="folder" class="upload-icon">
+        <p>Drop Your files here! Or <span class="browse-text" id="browseBtn">browse</span></p>
+        <small>Support files PDF, JPG, TIF, MP4 & PNG.</small>
+        <input type="file" id="fileInput" accept=".pdf, .jpg, .jpeg, .png, .tif, .mp4" hidden>
+      </div>
+      <div class="file-progress" id="fileProgress">
+        <img src="/img/img.png" class="file-icon" id="fileTypeIcon">
+        <span id="fileName">No file chosen</span>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+        <span class="progress-status" id="progressStatus">✓</span>
+        <br>
+        <p id="result"></p>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    <!-- modal pop up image  -->
+
+   <!-- Image Crop Modal Structure (on top of other modals) -->
+<div id="cropModal" class="cropmodal top-modal">
+  <div id="modal-content">
+    <div class="modal-header">
+      <h2>Crop Your Image</h2>
+      <span class="cropModelclose" id="closeCropModal">&times;</span>
+    </div>
+    <div id="image-container">
+      <img id="image" src="" alt="Image to Crop">
+    </div>
+    <div id="zoom-controls">
+      <button id="zoomInButton">Zoom In</button>
+      <button id="zoomOutButton">Zoom Out</button>
+    </div>
+    <div id="pan-controls">
+      <button id="panUpButton">Move Up</button>
+      <button id="panDownButton">Move Down</button>
+      <button id="panLeftButton">Move Left</button>
+      <button id="panRightButton">Move Right</button>
+    </div>
+    <div id="rotate-controls">
+      <label for="rotate-slider">Rotate Image:</label>
+      <input type="range" id="rotate-slider" min="-45" max="45" value="0">
+    </div>
+    <button id="cropButton">Crop</button>
+  </div>
+</div>
+
+  <div id="preview">
+    <h3>Cropped Preview:</h3>
+    <img id="croppedImage" src="#" alt="Cropped Preview">
+</div>
+
+
+
+<div id="addItemModal" class="modal-overlay">
+  <div class="modal-content">
+      <h2>Add New Item</h2>
+      <form id="addItemForm">
+          <label for="new-item-name">Item Name:</label>
+          <input type="text" id="new-item-name" placeholder="Item Name" required><br>
+          
+          <label for="new-item-quantity">Quantity:</label>
+          <input type="number" id="new-item-quantity" placeholder="Quantity" min="1" step="1" required><br>
+
+          <label for="new-item-price">Price:</label>
+          <input type="number" id="new-item-price" placeholder="Price" min="0.01" step="0.01" required><br>
+
+
+          <label for="new-item-price">Tax:</label>
+          <input type="text" id="new-item-tax" placeholder="Tax %" required><br>
+
+          <button type="button" onclick="addNewItem()">Add Item</button>
+          <button type="button" onclick="closeAddItemModal()">Cancel</button>
+      </form>
+  </div>
+</div>
+{% include 'modal.html' %}
+  <script src="{{ url_for('static', filename='js/invoiceupload.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

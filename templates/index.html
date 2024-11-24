@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/invoiceupload.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+    <div class="upload-container">
+        <div class="upload-box">
+            <h3>File Upload</h3>
+            <div class="upload-area" id="uploadArea">
+                <img src="https://cdn-icons-png.flaticon.com/512/2175/2175188.png" alt="folder" class="upload-icon">
+                <p>Drop Your files here! Or <span class="browse-text" id="browseBtn">browse</span></p>
+                <small>Support files PDF, JPG, TIF, MP4 & PNG.</small>
+                <input type="file" id="fileInput" accept=".pdf, .jpg, .jpeg, .png, .tif, .mp4" hidden>
+                
+            </div>
+            <div class="file-progress" id="fileProgress">
+                <img src="/img/img.png" class="file-icon" id="fileTypeIcon">
+                <span id="fileName">No file chosen</span>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span class="progress-status" id="progressStatus">✓</span>
+               <br>
+               <p id="result"></p>
+               <br>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- modal pop up image  -->
+
+    <div id="modal">
+        <div id="modal-content">
+            <div class="modal-header">
+                <h2>Crop Your Image</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="image-container">
+                <img id="image" src="" alt="Image to Crop">
+            </div>
+            <div id="zoom-controls">
+                <button id="zoomInButton">Zoom In</button>
+                <button id="zoomOutButton">Zoom Out</button>
+            </div>
+            <div id="pan-controls">
+                <button id="panUpButton">Move Up</button>
+                <button id="panDownButton">Move Down</button>
+                <button id="panLeftButton">Move Left</button>
+                <button id="panRightButton">Move Right</button>
+            </div>
+            <div id="rotate-controls">
+                <label for="rotate-slider">Rotate Image:</label>
+                <input type="range" id="rotate-slider" min="-45" max="45" value="0">
+            </div>
+            <button id="cropButton">Crop</button>
+        </div>
+    </div>
+
+    <div id="preview">
+        <h3>Cropped Preview:</h3>
+        <img id="croppedImage" src="#" alt="Cropped Preview">
+    </div>
+  
+    <script src="{{ url_for('static', filename='js/invoiceupload.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+</body>
+</html>
